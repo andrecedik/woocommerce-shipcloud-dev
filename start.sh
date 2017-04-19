@@ -8,8 +8,10 @@ docker-compose up -d
 sleep 15
 
 docker exec ${dirname}_wordpress_1 wp core update --allow-root
+docker exec ${dirname}_wordpress_1 wp core language update --allow-root
 docker exec ${dirname}_wordpress_1 wp core install --url=localhost --title=Shipcloud --admin_user=admin --admin_password=admin --admin_email=info@example.com --allow-root
 docker exec ${dirname}_wordpress_1 wp plugin install woocommerce --allow-root
+docker exec ${dirname}_wordpress_1 wp plugin update woocommerce --allow-root
 
 if [ ! -d ./src/plugins/woocommerce-shipcloud ]; then
     git clone git@github.com:awsmug/woocommerce-shipcloud.git ./src/plugins/woocommerce-shipcloud
