@@ -3,13 +3,15 @@ services:
   wordpress:
     depends_on:
       - db
-    build: ./devops/docker/wordpress
+    build: ./devops/docker/wordpress/
+    image: wooplugin:1.0
     restart: always
     volumes:
       - ./src:/var/www/html/wp-content
     environment:
       WORDPRESS_DB_HOST: db:3306
       WORDPRESS_DB_PASSWORD: p4ssw0rd!
+      XDEBUG_CONFIG: remote_host=192.168.1.36
     ports:
       - 80:80
       - 443:443
