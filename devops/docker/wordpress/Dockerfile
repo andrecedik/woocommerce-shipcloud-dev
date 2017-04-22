@@ -22,7 +22,6 @@ RUN yes | pecl install xdebug \
     && echo "xdebug.profiler_output_name=cachegrind.out.%t" >> /usr/local/etc/php/conf.d/xdebug.ini \
     && echo "xdebug.profiler_output_dir=/tmp" >> /usr/local/etc/php/conf.d/xdebug.ini \
     && echo "xdebug.idekey=PHPSTORM" >> /usr/local/etc/php/conf.d/xdebug.ini \
-    && echo "xdebug.remote_port=9091" >> /usr/local/etc/php/conf.d/xdebug.ini \
     && rm -rf /usr/local/etc/php/conf.d/opcache-recommended.ini
 
 # Cleanup
