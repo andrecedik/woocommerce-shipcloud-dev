@@ -1,10 +1,12 @@
 #!/bin/bash
 
+set -e
+
 # main config
 PLUGINSLUG="shipcloud-for-woocommerce"
 CURRENTDIR=`pwd`
 MAINFILE="woocommerce-shipcloud.php" # This should be the name of your main php file in the WordPress plugin
-DEFAULT_EDITOR="/usr/bin/vim"
+DEFAULT_EDITOR="/usr/bin/vi"
 
 # git config
 GITPATH="$CURRENTDIR/src/plugins/$PLUGINSLUG/" # this file should be in the base of your git repository
@@ -21,6 +23,8 @@ if [ "$SVNUSER" == "" ] || [ "$SVNPASS" == "" ]
 	then echo "Please enter a SVN username and password (e.g. deploy USERNAME PASSWORD)"
 	exit 1
 fi
+
+rm -rf $SVNPATH
 
 # Let's begin...
 echo
@@ -69,16 +73,16 @@ printf "Preparing commit message..."
 echo "updated version to $NEWVERSION1" > /tmp/wppdcommitmsg.tmp
 echo "Done."
 
-printf "Preparing assets-wp-repo..."
+echo "Preparing assets-wp-repo..."
 if [ -d $ASSETSPATH ]
 	then
-		svn checkout --quiet $SVNURL/assets $SVNPATH/assets > /dev/null 2>&1
-		mkdir $SVNPATH/assets/ > /dev/null 2>&1 # Create assets directory if it doesn't exists
-		mv $SVNPATH/trunk/$ASSETSFOLDER/* $SVNPATH/assets/ # Move new assets
+		svn checkout --quiet $SVNURL/assets $SVNPATH/assets > /dev/null
+        [[ -d $SVNPATH/assets/ ]] || mkdir $SVNPATH/assets/ > /dev/null # Create assets directory if it doesn't exists
+		cp -a $SVNPATH/trunk/$ASSETSFOLDER/* $SVNPATH/assets/ # Move new assets
+		echo "  SVN: Remove asset folder..."
 		rm -rf $SVNPATH/trunk/$ASSETSFOLDER # Clean up
 		cd $SVNPATH/assets/ # Switch to assets directory
-		svn stat | grep "^?\|^M" > /dev/null 2>&1 # Check if new or updated assets exists
-		if [ $? -eq 0 ]
+		if svn stat | grep "^?\|^M"
 			then
 				svn stat | grep "^?" | awk '{print $2}' | xargs svn add --quiet # Add new assets
 				echo -en "Committing new assets..."
@@ -98,7 +102,7 @@ if [ -f composer.lock ]
 	then rm composer.lock
 fi
 
-composer install --prefer-dist --no-dev --quiet
+[[ -f composer.json ]] && composer install --prefer-dist --no-dev --quiet
 echo "Done."
 
 printf "Ignoring GitHub specific files and deployment script..."
@@ -120,13 +124,17 @@ README.md
 tests" .
 echo "Done."
 
-printf "Adding new files..."
-svn stat | grep "^?" | awk '{print $2}' | xargs svn add --quiet
-echo "Done."
+if svn stat | grep "^?"; then
+    printf "Adding new files..."
+    svn stat | grep "^?" | awk '{print $2}' | xargs svn add --quiet
+    echo "Done."
+fi
 
-printf "Removing old files..."
-svn stat | grep "^\!" | awk '{print $2}' | xargs svn remove --quiet
-echo "Done."
+if svn stat | grep "^\!"; then
+    printf "Removing old files..."
+    svn stat | grep "^\!" | awk '{print $2}' | xargs svn remove --quiet
+    echo "Done."
+fi
 
 printf "Enter a commit message for this new SVN version..."
 $DEFAULT_EDITOR /tmp/wppdcommitmsg.tmp
