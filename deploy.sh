@@ -2,6 +2,10 @@
 
 set -e
 
+exec 2>deploy.log
+set -x
+
+
 # main config
 PLUGINSLUG="shipcloud-for-woocommerce"
 CURRENTDIR=`pwd`
@@ -148,7 +152,9 @@ echo "Done."
 
 printf "Tagging and committing new SVN tag..."
 echo "Deleting: $SVNURL/tags/$NEWVERSION1"
-svn delete $SVNURL/tags/$NEWVERSION1 -m "Renewing Tag"
+if ! svn delete $SVNURL/tags/$NEWVERSION1 -m "Renewing Tag"; then
+    echo "First time this version will be pushed."
+fi
 
 CP_FROM="$SVNURL/trunk"
 CP_TO="$SVNURL/tags/$NEWVERSION1"
