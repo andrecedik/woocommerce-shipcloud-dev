@@ -1,5 +1,11 @@
 ## Deploy
 
+You may want to open these during the process:
+
+- https://github.com/awsmug/shipcloud-for-woocommerce
+- https://plugins.svn.wordpress.org/shipcloud-for-woocommerce/tags/
+- https://de.wordpress.org/plugins/shipcloud-for-woocommerce/
+
 Hop in the correct dir:
 
     cd src/plugins/shipcloud-for-woocommerce/
@@ -19,19 +25,21 @@ Now:
   - \WooCommerce_Shipcloud::VERSION
   - woocommerce-shipcloud.php
   - `grep -r '1.4.0' *` has no other odd entry.
-- Changelog at least (`git log 1.4.0..HEAD` helps):
-  - readme
+- Changelog at least (`git log --reverse 1.4.0..HEAD` helps):
+  - readme.txt
   - changelog.txt
 
 Then prepare:
 
-    git add readme.md readme.txt changelog.txt
+    git add readme.md readme.txt changelog.txt woocommerce-shipcloud.php
     # and others
     git commit -m 'Version bump 1.4.0'
     
 
 And deploy:
 
+    git status # should be empty
+    # go back to base dir
      ./deploy.sh username password    
 
 Cleanup:
