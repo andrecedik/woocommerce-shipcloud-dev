@@ -1,10 +1,14 @@
 ## Deploy
 
+Hop in the correct dir:
+
+    cd src/plugins/shipcloud-for-woocommerce/
+
 Run:
 
     git checkout master
     git status # needs to be clean
-    git fetch --all
+    git fetch --all --tags
     git merge origin/release/1.4
 
 Now:
@@ -14,7 +18,8 @@ Now:
   - readme.txt
   - \WooCommerce_Shipcloud::VERSION
   - woocommerce-shipcloud.php
-- Changelog at least:
+  - `grep -r '1.4.0' *` has no other odd entry.
+- Changelog at least (`git log 1.4.0..HEAD` helps):
   - readme
   - changelog.txt
 
