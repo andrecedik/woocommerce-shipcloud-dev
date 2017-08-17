@@ -28,7 +28,7 @@ if [ "$SVNUSER" == "" ] || [ "$SVNPASS" == "" ]
 	exit 1
 fi
 
-rm -rf $SVNPATH
+[[ -d $SVNPATH ]]; rm -rf $SVNPATH
 
 # Let's begin...
 echo
