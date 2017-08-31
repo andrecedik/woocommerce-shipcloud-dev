@@ -26,7 +26,7 @@ Now:
   - readme.txt
   - \WooCommerce_Shipcloud::VERSION
   - woocommerce-shipcloud.php
-  - `grep -r '1.4.0' *` has no other odd entry.
+  - `grep -r '1\.4\.0' *` has no other odd entry.
 - Changelog at least (`git log --reverse 1.4.0..HEAD` helps):
   - readme.txt
   - changelog.txt
@@ -45,15 +45,16 @@ And deploy:
     git status # should be empty
     git tag 1.4.2 -m "Released 1.4.2"
     # go back to base dir
+    cd ..; cd $(git rev-parse --show-toplevel)
      ./deploy.sh username password    
 
 Make github release:
 
-    cd src/plugins/shipcloud-for-woocommerce/
-    git push origin master
+    cd src/plugins/shipcloud-for-woocommerce/; \
+    git push origin master; \
     git push --tags
     
-    git checkout release/1.4
+    git checkout release/1.4 ;\
     git push origin release/1.4
     
 Goto https://github.com/awsmug/shipcloud-for-woocommerce/releases/new
