@@ -74,7 +74,7 @@ Cleanup:
 Now goto https://shipcloud.slack.com
 and spread the news:
 
-@here
+@here Release:
 - https://de.wordpress.org/plugins/shipcloud-for-woocommerce/
 - https://plugins.svn.wordpress.org/shipcloud-for-woocommerce/tags/
 - https://github.com/awsmug/shipcloud-for-woocommerce/releases
