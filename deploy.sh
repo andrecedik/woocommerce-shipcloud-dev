@@ -82,9 +82,10 @@ if [ -d $ASSETSPATH ]
 	then
 		svn checkout --quiet $SVNURL/assets $SVNPATH/assets > /dev/null
         [[ -d $SVNPATH/assets/ ]] || mkdir $SVNPATH/assets/ > /dev/null # Create assets directory if it doesn't exists
-		cp -a $SVNPATH/trunk/$ASSETSFOLDER/* $SVNPATH/assets/ # Move new assets
-		echo "  SVN: Remove asset folder..."
-		rm -rf $SVNPATH/trunk/$ASSETSFOLDER # Clean up
+		cp -a $SVNPATH/trunk/$ASSETSFOLDER/wordpress_com/* $SVNPATH/assets/ # Copy assets for wordpress.com website
+		echo "  SVN: Remove wordpress_com from plugin asset folder..."
+		rm -rf $SVNPATH/trunk/$ASSETSFOLDER/wordpress_com
+
 		cd $SVNPATH/assets/ # Switch to assets directory
 		if svn stat | grep "^?\|^M"
 			then
